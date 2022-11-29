@@ -1,0 +1,100 @@
+1. Aggiungere il nome "Sara" alla fine del seguente array:
+let persone = ["Mario", "Giovanni", "Annalisa", "Antonio"];
+Fornire almeno 3 soluzioni.
+
+SOLUZIONE=
+ let persone = ["Mario", "Giovanni", "Annalisa", "Antonio"];
+//Soluzione 1:
+persone.push("Sara");
+console.log(persone);
+
+//Soluzione 2:
+persone.splice(4,1,"Sara");
+console.log(persone);
+
+//Soluzione 3:
+let sara=["Sara"];
+let array3=persone.concat(sara);
+console.log(persone);
+
+///////////////////////////////////////////////////////////////////////////////////
+2. Scrivere una funzione che converta ogni elemento dell'array del punto 1) in maiuscolo.
+
+SOLUZIONE=
+let persone = ["Mario", "Giovanni", "Annalisa", "Antonio"];
+          let personeMaiuscolo= persone.map((element)=>element.toUpperCase());
+          console.log(personeMaiuscolo);
+
+///////////////////////////////////////////////////////////////////////////////////
+3. Stampare su console tutti i numeri da 0 a 20 multipli di 3.
+ let numeri= [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+SOLUZIONE=
+        const multipli3 = numeri.filter((elemento) => {
+            if (elemento % 3 === 0) {
+                return elemento
+            };
+        });
+        console.log(multipli3);
+
+
+//////////////////////////////////////////////////////////////////////////////////
+4. Scrivere una funzione js che mostri la differenza tra due date in giorni.
+
+SOLUZIONE=
+ let dateOne = new Date("2022-11-28");         //è lunedì
+        let dateTwo = new Date("2022-11-22"); //era martedì
+
+        let differenzaTempo =dateOne.getTime()- dateTwo.getTime(); 
+        let differenzaGiorni= differenzaTempo / (1000 * 3600 * 24);
+        console.log(differenzaGiorni);   
+
+//////////////////////////////////////////////////////////////////////////////////
+5. Scrivere una funzione js che stampi su console la data attuale in formato dd/MM/YYYY.
+
+SOLUZIONE=
+let data = new Date();
+
+        let giorno = data.getDate();
+        let mese = data.getMonth() + 1; // i mesi js partono da 0 
+        let anno = data.getFullYear();
+
+        giorno = giorno.toString().padStart(2, '0');
+        mese = mese.toString().padStart(2, '0');
+        console.log(`${giorno}/${mese}/${anno}`);
+
+ Al posto di padStart si può usare un if:
+                if (giorno < 10) {
+                    giorno = '0' + giorno;
+                }
+        
+                if (mese < 10) {
+                    mese = '0' + mese;
+
+/////////////////////////////////////////////////////////////////////////////////
+6. Scrivere una funzione js che accetti una stringa come parametro e conti il numero di vocali in essa presenti.
+
+SOLUZIONE=
+const vocali= (stringa) => 
+        Array.from(stringa).filter(lettere => 'aeiou'.includes(lettere)).length;
+
+        console.log(vocali('Ciao, sono una stringa, quante vocali ho?')); // 16
+        console.log(vocali('Sara')); // 2
+        console.log(vocali('tttttjtjtjtj')); // 0
+
+////////////////////////////////////////////////////////////////////////////////
+7. Dati i seguenti array:
+let corsiMario = ['Matematica', 'Inglese', 'Programmazione'];
+let corsiAnna = ['Geografica', 'Spagnolo', 'Programmazione'];
+Stampare su console i corsi in comune (Output: 'Programmazione').
+
+SOLUZIONE=
+let corsiMario = ['Matematica', 'Inglese', 'Programmazione'];
+        let corsiAnna = ['Geografica', 'Spagnolo', 'Programmazione'];
+
+        let corsiComuni = [];
+        corsiMario.map(corso1=>{
+            corsiAnna.map(corso2 =>corso1===corso2 && corsiComuni.push(corso1))
+        });
+        console.log(corsiComuni);
+
