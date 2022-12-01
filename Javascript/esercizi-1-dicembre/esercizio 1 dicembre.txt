@@ -1,0 +1,24 @@
+Form:
+-Pagina Html con form, "Modulo di iscrizione"
+-Nome, cognome:dimensione max 20 caratteri
+-anno di nascita superiore a 1950, email con controllo(@)
+-Al click del submit: stampa in console quanti anni ha chi si è iscritto
+-se tutto ok: alert di bootstrap: "Submit avvenuta con successo!"
+
+Funzione:
+-scrivi una funzione js che prende in input due numeri, controlla che siano numeri. Come 3'parametro prende una stringa, con l'operazione da effettuare (+,-,*,/), restituendoti il risultato di quello che fa.
+
+const conta=(num1,num2, stringa)=>{
+            if(+num1 && +num2){
+                console.log("Sono numeri")
+                if(stringa){
+                    let risultato=eval(num1+stringa+num2);
+                    console.log(risultato); 
+                }
+            }else{
+                console.log("Non sono numeri")
+            }
+
+        };
+
+        conta(5,2,"*");
