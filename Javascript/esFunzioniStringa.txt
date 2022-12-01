@@ -1,0 +1,30 @@
+
+es3:
+-implementa una fz che, data una stringa, toglie tutti gli spazi
+
+ const togliSpazi = (stringa) => {
+            console.log(stringa.split(" ").join(""));
+        };
+
+        togliSpazi("Ciao sono una stringa senza spazi");
+
+//Altro metodo:
+        const togliSpazi2=(stringa)=>{
+            let regex=/\s+/g;
+            let y=stringa.replace(regex,"");
+            console.log(y);
+        }
+
+        togliSpazi2("Anche io non ho più spazi")
+
+es4:
+-e un'altra che mette tutte le parole presenti in un array:
+
+ const diventaArray=(stringa)=>{
+            let x=stringa.split(" ");
+            console.log(x);
+        };
+
+        diventaArray("Sono una stringa che diventa array");
+
+
