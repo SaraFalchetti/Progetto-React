@@ -1,0 +1,22 @@
+-scrivi una funzione js che prende in input due numeri, controlla che siano numeri. Come 3'parametro prende una stringa, con l'operazione da effettuare (+,-,*,/), restituendoti il risultato di quello che fa.
+
+const conta = (num1, num2, stringa) => {
+            if (+num1 && +num2) {
+                switch (stringa) {
+                    case "+":
+                        console.log(num1 + num2);
+                        break;
+                    case "-":
+                        console.log(num1 - num2);
+                        break;
+                    case "*":
+                        console.log(num1 * num2);
+                        break;
+                    case "/":
+                        console.log(num1 / num2)
+                        break;
+                }
+            }
+
+        };
+        conta(8, 3, "-");
