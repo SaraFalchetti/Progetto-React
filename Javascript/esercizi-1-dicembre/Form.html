@@ -15,15 +15,14 @@
     <form class="row g-3" id="form">
         <div class="col-md-4">
             <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="nome" value="" 
-            pattern="^[a-zA-Z]{1,20}$" placeholder="Nome"
+            <input type="text" class="form-control" id="nome" value="" pattern="^[a-zA-Z]{1,20}$" placeholder="Nome"
                 title="Inserisci massimo 20 caratteri" required>
 
         </div>
         <div class="col-md-4">
             <label for="cognome" class="form-label">Cognome</label>
-            <input type="text" class="form-control" id="cognome" value="" 
-            pattern="^[a-zA-Z]{1,20}$" placeholder="Cognome" title="Inserisci massimo 20 caratteri">
+            <input type="text" class="form-control" id="cognome" value="" pattern="^[a-zA-Z]{1,20}$"
+                placeholder="Cognome" title="Inserisci massimo 20 caratteri">
         </div>
         <div class="col-md-4">
             <label for="Email" class="form-label">Email</label>
@@ -51,14 +50,14 @@
         <div class="alert alert-success" role="alert" id="alert">
             Iscrizione avvenuta con successo!
         </div>
-       
+
     </form>
     <script>
 
         let button = document.getElementById("button");
-        let alertSuccesso= document.getElementById("alert");
+        let alertSuccesso = document.getElementById("alert");
         alertSuccesso.style.display = "none";
-       
+
         button.addEventListener("click", () => {
 
             let userInput = document.getElementById("data").value;
@@ -69,19 +68,61 @@
             var anno = ageData.getUTCFullYear();
             var age = Math.abs(anno - 1970);
             console.log("La persona iscritta ha " + age + " anni");
+
         });
 
-        let form=document.getElementById("form");
+        let form = document.getElementById("form");
 
-        form.addEventListener("submit", (e)=>{
+        form.addEventListener("submit", (e) => {
+
+
+
+
+
             let nome = document.getElementById("nome").value;
             let cognome = document.getElementById("cognome").value;
             let email = document.getElementById("email").value;
+
             if (nome !== "" && cognome !== "" && email !== "") {
                 alertSuccesso.style.display = "block";
+            };
+
+            ///////settare i cookies:
+            function setCookie(cname, cvalue, exdays) {
+                const d = new Date();
+                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                let expires = "expires=" + d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
             }
 
+            //getcookie:
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            };
+
+            setCookie("nome", nome, 30);
+            console.log(getCookie("nome"));
+
             e.preventDefault();
+
+            /*
+            come farlo in console:
+            document.cookie
+                .split(';')
+                .map(cookie => cookie.split('='))
+                .reduce((accumulator, [key, value]) => ({ ...accumulator, [key.trim()]: decodeURIComponent(value) }), {}); */
         })
 
     </script>
