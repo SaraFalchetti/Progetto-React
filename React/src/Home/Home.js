@@ -117,33 +117,37 @@ const Home = () => {
             />
           }
 
-          {!show && dati.map((card) =>
-            <Card key={card.id}>
-                  <div className="card-body">
+          <div className='row'>
+
+            {!show && dati.map((card) =>
+              <Card key={card.id}>
+                
                     <h5 className="card-title"> {card.id} {card.nome}
                       {card.cognome}
                     </h5>
-                    <div className="card-text">{card.email} {card.nome}
-                      <p className="card-text">  </p>
+                    <div className="card-text">
+                      <p className="card-text"> {card.email} {card.numero} </p>
                       <div>
-                        <button type="button" className="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#exampleModal" 
-                        ><FontAwesomeIcon icon={faEye}
-                        />
+                        <button type="button" className="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#indirizzoModal"
+                          onClick={() => saveIndirizzoHandler(card.indirizzo)}
+                        ><FontAwesomeIcon icon={faEye} />
                         </button>
-                        <button type="button" className="btn btn-outline-success mx-1" //onClick={() => modificaContatto(card)}
-                        
-                        ><FontAwesomeIcon icon={faPencilAlt}
-                          /></button>
-                        <button type="button" className="btn btn-outline-success mx-1" //onClick={() => deleteContatto(card.id)}
-                        
-                        ><FontAwesomeIcon icon={faTrashAlt}
-                          /></button>
+
+                        <button type="button" className="btn btn-outline-success mx-1" onClick={() => modificaHandler(card)}
+                        ><FontAwesomeIcon icon={faPencilAlt} /></button>
+
+                        <button type="button" className="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#eliminaModal"
+                          onClick={() => prendiId(card.id)}
+                        ><FontAwesomeIcon icon={faTrashAlt} /></button>
                       </div>
                     </div>
-                  </div>
-            </Card>)
-          }
+                
+              </Card>)
+            }
+          </div>
         </div>
+
+
 
         <div className='row'>
           <div className='col-12 mt-1 mx-3 p-1'><h1>Inserisci un contatto</h1></div>
