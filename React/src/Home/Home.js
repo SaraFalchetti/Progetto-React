@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect, useCallback } from 'react';
+import useHttp from '../hook/use-http';
 import { faEye, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TabellaDati from '../tabella-dati/TabellaDati';
@@ -12,56 +12,40 @@ import Modale2 from '../UI/Modale2';
 import Filtro from '../filtro/Filtro';
 
 
-const dati_statici = [
-  {
-    id: 1,
-    nome: 'Mario',
-    cognome: 'Rossi',
-    email: 'MarioRossi@email.it',
-    numero: 'Telefono 1',
-    indirizzo: 'Indirizzo 1'
-  },
-
-  {
-    id: 2,
-    nome: 'Gianni',
-    cognome: 'Morandi',
-    email: 'Email@2',
-    numero: 'Telefono 2',
-    indirizzo: 'Indirizzo 2'
-  },
-
-  {
-    id: 3,
-    nome: 'Mario',
-    cognome: 'Bianchi',
-    email: 'Email@3',
-    numero: 'Telefono 3',
-    indirizzo: 'Indirizzo 3'
-  },
-
-  {
-    id: 4,
-    nome: 'Serena',
-    cognome: 'Dandini',
-    email: 'Email@4',
-    numero: 'Telefono 4',
-    indirizzo: 'Indirizzo 4'
-  },
-];
-
 const Home = () => {
-
-  const [dati, setDati] = useState(dati_statici);
+  const [dati, setDati] = useState([]);
   const [indirizzo, setIndirizzo] = useState(null);
 
   const [editedContatto, setEditedContatto] = useState(null);
   const [id, setId] = useState(null);
 
   const [show, setShow] = useState(true);
-
   const [spin, setSpin] = useState(true);
+
   const [nomeCerca, setNomeCerca] = useState("");
+
+  /*Chiamata http */
+const userData= data =>{
+  const user_array = data.map(
+        userData => {
+          let nomeSplit = userData.name.split(" ");
+          return {
+            id: userData.id,
+            nome: nomeSplit[0],
+            cognome: nomeSplit[1],
+            email: userData.email,
+            numero: userData.phone,
+            indirizzo: userData.address["street"]
+          }
+        });
+      setDati(user_array)};
+
+const {sendRequest: fetchUser} = 
+useHttp({url:'https://jsonplaceholder.typicode.com/users'}, userData ); 
+
+  useEffect(() => {
+    fetchUser();
+  });
 
 
   const cliccaQui = () => {
@@ -112,7 +96,7 @@ const Home = () => {
   }
 
   const handleSearch = (data) => {
-    return data.filter((item) => item.nome.toLowerCase().includes(nomeCerca));
+    return data.filter((item) => item.nome.toLowerCase().includes(nomeCerca.toLowerCase()));
 
   }
 
@@ -132,16 +116,19 @@ const Home = () => {
             Spinner</button>
 
           <Filtro title={"Ricerca"}>
-            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" 
-            onChange={(e) => setNomeCerca(e.target.value)} />
+            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+              onChange={(e) => setNomeCerca(e.target.value)} />
           </Filtro>
 
+
           {show &&
-            <TabellaDati contatti={handleSearch(dati)}
+            <TabellaDati
+              contatti={handleSearch(dati)}
               onDelete={prendiId}
               onChange={modificaHandler}
               onSaveIndirizzo={saveIndirizzoHandler}
-            />
+            >
+            </TabellaDati>
           }
 
 
