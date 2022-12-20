@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import useHttp from '../hook/use-http';
 import { faEye, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +11,6 @@ import Loading from '../UI/Loading';
 import Form2 from '../form/Form2';
 import Modale2 from '../UI/Modale2';
 import Filtro from '../filtro/Filtro';
-
 
 const Home = () => {
   const [dati, setDati] = useState([]);
@@ -25,23 +25,24 @@ const Home = () => {
   const [nomeCerca, setNomeCerca] = useState("");
 
   /*Chiamata http */
-const userData= data =>{
-  const user_array = data.map(
-        userData => {
-          let nomeSplit = userData.name.split(" ");
-          return {
-            id: userData.id,
-            nome: nomeSplit[0],
-            cognome: nomeSplit[1],
-            email: userData.email,
-            numero: userData.phone,
-            indirizzo: userData.address["street"]
-          }
-        });
-      setDati(user_array)};
+  const userData = data => {
+    const user_array = data.map(
+      userData => {
+        let nomeSplit = userData.name.split(" ");
+        return {
+          id: userData.id,
+          nome: nomeSplit[0],
+          cognome: nomeSplit[1],
+          email: userData.email,
+          numero: userData.phone,
+          indirizzo: userData.address["street"]
+        }
+      });
+    setDati(user_array)
+  };
 
-const {sendRequest: fetchUser} = 
-useHttp({url:'https://jsonplaceholder.typicode.com/users'}, userData ); 
+  const { sendRequest: fetchUser } =
+    useHttp({ url: 'https://jsonplaceholder.typicode.com/users' }, userData);
 
   useEffect(() => {
     fetchUser();

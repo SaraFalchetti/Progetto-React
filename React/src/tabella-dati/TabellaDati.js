@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../tabella-dati/TabellaDati.scss';
 //import React, { useState } from 'react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 const TabellaDati = (props) => {
@@ -43,7 +44,13 @@ const TabellaDati = (props) => {
             {props.contatti.map((contatto, index) =>
               <tr key={contatto.id} className={` ${index % 2 === 0 ? 'gray' : ''}`}
               >
-                <th scope="row">{contatto.id}</th>
+                
+                  <th scope="row">
+                    <Link to={`/dettaglio/${contatto.id}`}>
+                    {contatto.id} 
+                    </Link>
+                    </th>
+               
                 <td>{contatto.nome}</td>
                 <td>{contatto.cognome}</td>
                 <td>{contatto.email}</td>
