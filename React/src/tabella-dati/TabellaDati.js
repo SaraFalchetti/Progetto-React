@@ -19,9 +19,9 @@ const TabellaDati = (props) => {
 
   };
 
-  const modificaContatto = (contatto) => {
+ /*  const modificaContatto = (contatto) => {
     props.onChange(contatto);
-  };
+  }; */
 
   return (
     < div className='row'>
@@ -44,13 +44,11 @@ const TabellaDati = (props) => {
             {props.contatti.map((contatto, index) =>
               <tr key={contatto.id} className={` ${index % 2 === 0 ? 'gray' : ''}`}
               >
-                
-                  <th scope="row">
-                    <Link to={`/dettaglio/${contatto.id}`}>
-                    {contatto.id} 
-                    </Link>
-                    </th>
-               
+
+                <th scope="row">
+                  {contatto.id}
+                </th>
+
                 <td>{contatto.nome}</td>
                 <td>{contatto.cognome}</td>
                 <td>{contatto.email}</td>
@@ -62,9 +60,14 @@ const TabellaDati = (props) => {
                       onClick={() => trovaIndirizzo(contatto)} ><FontAwesomeIcon icon={faEye}
                       />
                     </button>}
-                  <button type="button" className="btn btn-outline-success mx-1" onClick={() => modificaContatto(contatto)}><FontAwesomeIcon icon={faPencilAlt}
 
-                  /></button>
+                  <Link to={`/dettaglio/${contatto.id}`}>
+                    <button type="button" className="btn btn-outline-success mx-1" //onClick={() => modificaContatto(contatto)}
+                    ><FontAwesomeIcon icon={faPencilAlt}
+                    /></button>
+                  </Link>
+
+
                   <button type="button" className="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#eliminaModal"
                     onClick={() => deleteContatto(contatto.id)}
                   ><FontAwesomeIcon icon={faTrashAlt}

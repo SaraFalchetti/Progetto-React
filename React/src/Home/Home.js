@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link } from 'react-router-dom'
 import useHttp from '../hook/use-http';
 import { faEye, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,21 +8,25 @@ import TabellaDati from '../tabella-dati/TabellaDati';
 //import Modale from '../UI/Modale';
 import Card from '../UI/Card';
 import Loading from '../UI/Loading';
-import Form2 from '../form/Form2';
+//import Form2 from '../form/Form2';
 import Modale2 from '../UI/Modale2';
 import Filtro from '../filtro/Filtro';
+
 
 const Home = () => {
   const [dati, setDati] = useState([]);
   const [indirizzo, setIndirizzo] = useState(null);
 
-  const [editedContatto, setEditedContatto] = useState(null);
+  const [editedContatto, setEditedContatto] = useState(null); //MODIFICA,spostato in dettaglio
+
   const [id, setId] = useState(null);
 
   const [show, setShow] = useState(true);
   const [spin, setSpin] = useState(true);
 
   const [nomeCerca, setNomeCerca] = useState("");
+  
+
 
   /*Chiamata http */
   const userData = data => {
@@ -42,11 +46,11 @@ const Home = () => {
   };
 
   const { sendRequest: fetchUser } =
-    useHttp({ url: 'https://jsonplaceholder.typicode.com/users' }, userData);
+    useHttp({ url: 'http://localhost:8000/users' }, userData);
 
   useEffect(() => {
     fetchUser();
-  });
+  }, []);
 
 
   const cliccaQui = () => {
@@ -58,12 +62,12 @@ const Home = () => {
 
   }
 
-  const modificaHandler = (contatto) => {
-    setEditedContatto(contatto);
+  /*  const modificaHandler = (contatto) => {
+     setEditedContatto(contatto);
+ 
+   }; */
 
-  };
-
-  const saveFormDataHandler = (data) => {
+  const saveFormDataHandler = (data) => { //MODIFICA
 
     const index = dati.findIndex((elemento) => elemento.id === data.id)
 
@@ -88,8 +92,14 @@ const Home = () => {
     setIndirizzo(null);
   };
 
+//DELETE DEL CONTATTO
+  const { sendRequest: deleteUser } =
+    useHttp({ url: `http://localhost:8000/users/${id}`, method: 'DELETE' }, userData);
+
   const deleteHandler = () => {
     setDati((prevState) => prevState.filter(cont => cont.id !== id));
+    deleteUser();
+
   };
 
   const prendiId = (id) => {
@@ -116,22 +126,25 @@ const Home = () => {
             onClick={mostraSpinner}>
             Spinner</button>
 
+          <Link to="/dettaglio">
+            <button type="button" className="btn btn-outline-success mx-1">
+              Inserisci un contatto</button>
+          </Link>
+
           <Filtro title={"Ricerca"}>
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
               onChange={(e) => setNomeCerca(e.target.value)} />
           </Filtro>
 
-
           {show &&
             <TabellaDati
               contatti={handleSearch(dati)}
               onDelete={prendiId}
-              onChange={modificaHandler}
+              //onChange={modificaHandler} MODIFICA
               onSaveIndirizzo={saveIndirizzoHandler}
             >
             </TabellaDati>
           }
-
 
           {!spin && <Loading></Loading>}
 
@@ -150,7 +163,7 @@ const Home = () => {
                       ><FontAwesomeIcon icon={faEye} />
                       </button>
 
-                      <button type="button" className="btn btn-outline-success mx-1" onClick={() => modificaHandler(card)}
+                      <button type="button" className="btn btn-outline-success mx-1" /* onClick={() => modificaHandler(card)} */
                       ><FontAwesomeIcon icon={faPencilAlt} /></button>
 
                       <button type="button" className="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#eliminaModal"
@@ -165,6 +178,7 @@ const Home = () => {
           </div>
         </div>
 
+        {/* FORM 
         <div className='row'>
           <div className='col-12 mt-1 mx-3 p-1'><h1>Inserisci un contatto</h1></div>
         </div>
@@ -173,7 +187,8 @@ const Home = () => {
             onSaveFormData={saveFormDataHandler}
             editedContatto={editedContatto}
           />
-        </div>
+        </div> */}
+
 
         <Modale2 closeModal={settaIndirizzo}
           title="Indirizzo dell'utente"

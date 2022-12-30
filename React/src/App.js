@@ -3,6 +3,7 @@ import Home from "./Home/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import Dettaglio from '../src/pages/Dettaglio'
+import NuovoUtente from './pages/NuovoUtente';
 
 
 function App() {
@@ -18,6 +19,9 @@ function App() {
         </Route>
         <Route path="/dettaglio/:userId">
           <Dettaglio />
+        </Route>
+        <Route path="/dettaglio">
+        <Dettaglio />
         </Route>
         <Route path="*">
           <Redirect to="/tabella" />

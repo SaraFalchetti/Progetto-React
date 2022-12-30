@@ -1,24 +1,39 @@
 import Alert from "../alert/Alert";
-import React, { useEffect, useRef,useState } from "react";
-
-const Form2 = (props) => {
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik"
+//comincio a provare con formik
+const FormFormik = (props) => {
     const { editedContatto } = props;
     const [show, setShow] = useState(true);
 
-    const nameInputRef = useRef();
+    const formik = useFormik({
+        initialValues: {
+            nome: "",
+            cognome: "",
+            email: "",
+            numero: "",
+            indirizzo: ""
+        },
+        onSubmit: values => {
+            // handle form submission
+        },
+    });
+
+    //ELIMINARE TUTTI I REF
+     const nameInputRef = useRef();
     const cognomeInputRef = useRef();
     const emailInputRef = useRef();
     const numeroInputRef = useRef();
     const indirizzoInputRef = useRef();
-
+ 
     useEffect(() => {
 
         if (editedContatto) {
-            nameInputRef.current.value = editedContatto.nome;
-            cognomeInputRef.current.value = editedContatto.cognome;
-            emailInputRef.current.value = editedContatto.email;
-            numeroInputRef.current.value = editedContatto.numero;
-            indirizzoInputRef.current.value = editedContatto.indirizzo;
+            formik.values.nome = editedContatto.nome;
+            formik.values.cognome = editedContatto.cognome;
+            formik.values.email = editedContatto.email;
+            formik.values.numero= editedContatto.numero;
+            formik.values.indirizzo= editedContatto.indirizzo;
         }
 
     }, [editedContatto]);
@@ -27,9 +42,7 @@ const Form2 = (props) => {
 
         setShow((s) => !s);
 
-
-    }
-
+    };
 
     const submitHandler = (event) => {
         event.preventDefault();
@@ -69,14 +82,14 @@ const Form2 = (props) => {
             <div className='col-12 mt-1 mx-3 p-1'><h1>Inserisci/modifica un contatto</h1></div>
         </div>
             <div className='row'>
-                <form onSubmit={submitHandler}>
+                <form onSubmit={formik.handleSubmit}>
                     <div className="row">
                         <div className="col-sm-12 col-md-6 col-lg-3">
                             <div className="form-group my-2">
                                 <label>Nome</label>
                                 <input type="text"
                                     className="form-control my-1" id="exampleInputName" placeholder="Inserisci il nome"
-                                    ref={nameInputRef} />
+                                    onChange={formik.handleChange} value={formik.values.nome} />
                             </div>
                         </div>
                         <div className="col-sm-12 col-md-6 col-lg-3">
@@ -85,7 +98,7 @@ const Form2 = (props) => {
                                 <input type="text"
                                     className="form-control my-1" id="exampleInputCognome"
                                     placeholder="Inserisci il Cognome"
-                                    ref={cognomeInputRef}
+                                    onChange={formik.handleChange} value={formik.values.cognome}
                                 ></input>
                             </div>
                         </div>
@@ -95,7 +108,7 @@ const Form2 = (props) => {
                                 <input type="email"
                                     className="form-control my-1" id="exampleInputEmail1" aria-describedby="emailHelp"
                                     placeholder="Inserisci la email"
-                                    ref={emailInputRef}
+                                    onChange={formik.handleChange} value={formik.values.email}
                                 ></input>
                             </div>
                         </div>
@@ -105,7 +118,7 @@ const Form2 = (props) => {
                                 <input type="text"
                                     className="form-control my-1" id="exampleInputNumero"
                                     placeholder="Inserisci il numero di telefono"
-                                    ref={numeroInputRef}
+                                    onChange={formik.handleChange} value={formik.values.numero}
                                 ></input>
                             </div>
                         </div>
@@ -116,7 +129,7 @@ const Form2 = (props) => {
                             <label>Indirizzo</label>
                             <input type="text"
                                 className="form-control my-1" id="exampleInputName" placeholder="Inserisci l'indirizzo"
-                                ref={indirizzoInputRef} />
+                                onChange={formik.handleChange} value={formik.values.indirizzo} />
                         </div>
                     </div>
 
@@ -133,4 +146,4 @@ const Form2 = (props) => {
 
 }
 
-export default Form2;
+export default FormFormik;
