@@ -24,12 +24,8 @@ const Form2 = (props) => {
     }, [editedContatto]);
 
     const showModal = () => {
-
         setShow((s) => !s);
-
-
     }
-
 
     const submitHandler = (event) => {
         event.preventDefault();
@@ -50,23 +46,20 @@ const Form2 = (props) => {
             indirizzo: enteredUserIndirizzo
         };
 
-
-
         props.onSaveFormData(formData);
+       
         nameInputRef.current.value = "";
         cognomeInputRef.current.value = "";
         emailInputRef.current.value = "";
         numeroInputRef.current.value = "";
         indirizzoInputRef.current.value = "";
 
-
-
     };
 
     return (
 
         <><div className='row'>
-            <div className='col-12 mt-1 mx-3 p-1'><h1>Inserisci/modifica un contatto</h1></div>
+            <div  className='col-12 mt-1 mx-3 p-1'><h1>{props.title}</h1></div>
         </div>
             <div className='row'>
                 <form onSubmit={submitHandler}>
@@ -121,7 +114,9 @@ const Form2 = (props) => {
                     </div>
 
                     <button type='submit'
-                        className="btn btn-outline-success mt-1" onClick={showModal}>Invio</button>
+                        className="btn btn-outline-success mt-1" onClick={showModal}
+                         
+                         >Invio</button>
 
                 </form>
             </div>

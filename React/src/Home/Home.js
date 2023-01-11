@@ -25,8 +25,6 @@ const Home = () => {
   const [spin, setSpin] = useState(true);
 
   const [nomeCerca, setNomeCerca] = useState("");
-  
-
 
   /*Chiamata http */
   const userData = data => {
@@ -45,11 +43,10 @@ const Home = () => {
     setDati(user_array)
   };
 
-  const { sendRequest: fetchUser } =
-    useHttp({ url: 'http://localhost:8000/users' }, userData);
+  const { sendRequest: fetchUser } =useHttp();
 
   useEffect(() => {
-    fetchUser();
+    fetchUser({ url: 'http://localhost:8000/users' }, userData);
   }, []);
 
 
@@ -93,12 +90,11 @@ const Home = () => {
   };
 
 //DELETE DEL CONTATTO
-  const { sendRequest: deleteUser } =
-    useHttp({ url: `http://localhost:8000/users/${id}`, method: 'DELETE' }, userData);
+  const { sendRequest: deleteUser } = useHttp();
 
   const deleteHandler = () => {
-    setDati((prevState) => prevState.filter(cont => cont.id !== id));
-    deleteUser();
+   setDati((prevState) => prevState.filter(cont => cont.id !== id));
+    deleteUser({ url: `http://localhost:8000/users/${id}`, method: 'DELETE' });
 
   };
 
@@ -126,7 +122,7 @@ const Home = () => {
             onClick={mostraSpinner}>
             Spinner</button>
 
-          <Link to="/dettaglio">
+          <Link to="/dettaglio" >
             <button type="button" className="btn btn-outline-success mx-1">
               Inserisci un contatto</button>
           </Link>

@@ -2,17 +2,12 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useHttp from "../hook/use-http";
 import Form2 from "../form/Form2";
-import { useHistory } from 'react-router-dom';
-import  Alert  from "../alert/Alert";
+import FormFormik from "../form/FormFormik";
 
-
-const Dettaglio = (props) => {
+const Dettaglio = () => {
 
     const [editedContatto, setEditedContatto] = useState(null);
-    const[postContatto,setPostContatto]=useState(null);
-
-    //const history = useHistory();
-
+   
     const params = useParams();
 
     const { userId } = params;
@@ -30,104 +25,99 @@ const Dettaglio = (props) => {
             indirizzo: data.address["street"]
         }
         setEditedContatto(dato);
+    };
+    //Get:
+    const { sendRequest: getUtentiHandler } = useHttp();
+    //Modifica:
+    const { sendRequest: modificaHandler } = useHttp();
+    //Post:
+    const { sendRequest: postNuoviUtenti } = useHttp();
 
+    //POST: AGGIUNTA DI UN NUOVO UTENTE
+
+    //Set dati nella post:
+    const utenteToDto = data => {
+        const newUtente =
+        {
+            id: data.id,
+            name: data.nome + " " + data.cognome,
+            email: data.email,
+            phone: data.numero,
+            address: {
+                "street": data.indirizzo
+            }
+        }
+        return (newUtente)
     };
 
+    const addUserHandler = (user) => {
 
-    const { sendRequest: getUtentiHandler } = useHttp({
-        url: `${url}/${userId}`
-    }, datiUtenti);
-
-//POST: AGGIUNTA DI UN NUOVO UTENTE
-
- const postUtenti = data => {
-    const post = {
-        id: data.id,
-        name: data.nome,
-        email: data.email,
-        phone: data.numero,
-        address:{
-            "street":data.indirizzo
-        }
-    }
-    setEditedContatto(post);
-
-};  
- 
-       const addUserHandler= async(user)=>{
-        const response=await fetch('http://localhost:8000/users', {
-            method:'POST',
-            body: JSON.stringify(user),
-            headers: {
+        postNuoviUtenti({
+            url: `${url}`,
+            method: 'POST',
+            body: (utenteToDto(user)),
+            headers:
+            {
                 'Content-Type': 'application/json',
             }
         }
         );
-        const data= await response.json();
-
-        console.log(data);   
-        
+       
     };
-     
-    
-    //Con resquest usehttp:
-    /*   const { sendRequest: postNuoviUtenti } = useHttp({
-        url: `${url}`,
-        method:'POST',
-        body: (editedContatto),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-
-    }, postUtenti);
-
-    const addUserHandler=()=>{
-        postNuoviUtenti();
-    }
-
-     */
-
-
 
     useEffect(() => {
-        getUtentiHandler(userId);
-
+        if(userId){
+              getUtentiHandler({
+            url: `${url}/${userId}`
+        }, datiUtenti);
+        }
     }, []);
 
-    
-//MODIFICA:
-    /*  const { sendRequest: modificaHandler } = useHttp({
-        url: `${url}/${editedContatto.id}`,
+   
+ 
+    //MODIFICA:
+    const modificaUser = (user) => {
 
-        method: 'PUT',
-        body: (editedContatto),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }, datiUtenti);
-
-    const modificaUser = () => {
-     modificaHandler(); 
+        modificaHandler({
+            url: `${url}/${userId}`,
+            method: 'PUT',
+            body: (utenteToDto(user)),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
         
+        
+    };
 
-        setEditedContatto(null);
-        history.push('/tabella');
-        console.log()
-    }  */
+    const creaEModifica=(el)=>{
+        if(userId){
+            modificaUser(el);
+        }else{
+            addUserHandler(el);
+        }
+    };
 
 
-
+ 
     return (
         <>
-            <Form2
-                editedContatto={editedContatto}
-               //onSaveFormData={modificaUser}
-            onSaveFormData={addUserHandler} 
-            ></Form2>
 
-            
+             {/* <Form2 
+                editedContatto={editedContatto}
+                onSaveFormData={creaEModifica}
+            ></Form2>*/}
+
+           
+           <FormFormik 
+              editedContatto={editedContatto}
+                onSaveFormData={creaEModifica}>
+            </FormFormik> 
+ 
         </>
     )
 }
 
 export default Dettaglio;
+
+//json-server --watch data/db.json --port 8000

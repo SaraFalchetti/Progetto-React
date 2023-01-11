@@ -1,7 +1,7 @@
 
-const useHttp=(requestConfig, showData)=>{
+const useHttp=()=>{
 
-   const sendRequest= async () => {
+   const sendRequest= async (requestConfig, showData) => {
         const response=await fetch(
           requestConfig.url, {
           method: requestConfig.method ? requestConfig.method :'GET' ,
@@ -9,9 +9,11 @@ const useHttp=(requestConfig, showData)=>{
           headers: requestConfig.headers ? requestConfig.headers : {}
       }
       );
-
+      if(showData){
         const data= await response.json();
-        showData(data);   
+        showData(data);  
+      };
+        
       };
 
       return{
