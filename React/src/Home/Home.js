@@ -26,6 +26,8 @@ const Home = () => {
 
   const [nomeCerca, setNomeCerca] = useState("");
 
+
+
   /*Chiamata http */
   const userData = data => {
     const user_array = data.map(
@@ -62,7 +64,7 @@ const Home = () => {
   /*  const modificaHandler = (contatto) => {
      setEditedContatto(contatto);
  
-   }; */
+   }; 
 
   const saveFormDataHandler = (data) => { //MODIFICA
 
@@ -78,7 +80,7 @@ const Home = () => {
       })
     }
     setEditedContatto(null);
-  };
+  };*/
 
   const saveIndirizzoHandler = (address) => {
     setIndirizzo(address);
@@ -131,7 +133,7 @@ const Home = () => {
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
               onChange={(e) => setNomeCerca(e.target.value)} />
           </Filtro>
-
+ 
           {show &&
             <TabellaDati
               contatti={handleSearch(dati)}

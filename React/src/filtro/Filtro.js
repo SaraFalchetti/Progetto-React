@@ -4,7 +4,7 @@ const Filtro=(props)=>{
 
     return(
       <>
-        <nav className="navbar navbar-light bg-light justify-content-between">
+        <nav className="navbar navbar-light bg-transparent justify-content-between">
         <a className="navbar-brand">{props.title}</a>
           <form className="form-inline">
       {props.children}
