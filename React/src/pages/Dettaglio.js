@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import useHttp from "../hook/use-http";
-import Form2 from "../form/Form2";
 import FormFormik from "../form/FormFormik";
+import DettaglioContext from "../store/dettaglio-context";
+
 
 const Dettaglio = () => {
 
     const [editedContatto, setEditedContatto] = useState(null);
-   
+
     const params = useParams();
 
     const { userId } = params;
@@ -62,21 +63,20 @@ const Dettaglio = () => {
             }
         }
         );
-       
+
     };
 
     useEffect(() => {
-        if(userId){
-              getUtentiHandler({
-            url: `${url}/${userId}`
-        }, datiUtenti);
+        if (userId) {
+            getUtentiHandler({
+                url: `${url}/${userId}`
+            }, datiUtenti);
         }
     }, []);
 
-   
- 
+
     //MODIFICA:
-    const modificaUser = (user) => {
+    function modificaUser(user) {
 
         modificaHandler({
             url: `${url}/${userId}`,
@@ -86,34 +86,39 @@ const Dettaglio = () => {
                 'Content-Type': 'application/json',
             }
         });
-        
-        
-    };
+    }
 
-    const creaEModifica=(el)=>{
-        if(userId){
+    const creaEModifica = (el) => {
+        if (userId) {
             modificaUser(el);
-        }else{
+        } else {
             addUserHandler(el);
         }
     };
 
+    const ctx = useContext(DettaglioContext);
+    
+    const dettaglioHandler = (contatto) => {
 
- 
+        ctx.onDati(contatto)
+    }
+
+    const datiUtente = JSON.stringify(ctx.utente);
+
+
     return (
         <>
+            <div>
+                <p>{datiUtente}</p>
+            </div>
 
-             {/* <Form2 
+            <FormFormik
                 editedContatto={editedContatto}
                 onSaveFormData={creaEModifica}
-            ></Form2>*/}
 
-           
-           <FormFormik 
-              editedContatto={editedContatto}
-                onSaveFormData={creaEModifica}>
-            </FormFormik> 
- 
+                onSaveUtente={()=>dettaglioHandler(editedContatto)}>
+            </FormFormik>
+
         </>
     )
 }

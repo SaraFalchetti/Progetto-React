@@ -4,10 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../tabella-dati/TabellaDati.scss';
 //import React, { useState } from 'react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+
 
 
 const TabellaDati = (props) => {
+
+  const history=useHistory();
 
   const deleteContatto = (id) => {
     props.onDelete(id);
@@ -19,15 +22,25 @@ const TabellaDati = (props) => {
 
   };
 
- /*  const modificaContatto = (contatto) => {
-    props.onChange(contatto);
-  }; */
+  /*   const modificaContatto = (contatto) => {
+     props.onChange(contatto);
+      
+   };  */
+
+
+   const dettaglioHandler=(contatto)=>{
+   history.push(`/tabella/dettaglio/${contatto.id}`);
+   props.onSaveContatto(contatto);
+
+   };
+
 
   return (
     < div className='row'>
       <div className="table-responsive">
         <table className='table'
         >
+
           <thead className='sfondo'>
             <tr >
               <th scope="col">#</th>
@@ -35,8 +48,8 @@ const TabellaDati = (props) => {
               <th scope="col">Cognome</th>
               <th scope="col">Email</th>
               <th scope="col">Numero di telefono</th>
-
               <th scope="col">Modifica</th>
+
             </tr>
           </thead>
           <tbody>
@@ -61,11 +74,13 @@ const TabellaDati = (props) => {
                       />
                     </button>}
 
-                  <Link to={`/dettaglio/${contatto.id}`}>
-                    <button type="button" className="btn btn-outline-success mx-1" //onClick={() => modificaContatto(contatto)}
+                  {/* <Link to={`/tabella/dettaglio/${contatto.id}`}> */}
+                    <button type="button" className="btn btn-outline-success mx-1"
+                   //  onClick={() => modificaContatto(contatto)}
+                    onClick={()=>dettaglioHandler(contatto)}
                     ><FontAwesomeIcon icon={faPencilAlt}
-                    /></button>
-                  </Link>
+                      /></button>
+                 {/*   </Link>  */}
 
 
                   <button type="button" className="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#eliminaModal"
@@ -78,6 +93,7 @@ const TabellaDati = (props) => {
             )}
           </tbody>
         </table>
+        
       </div>
     </div >
   );

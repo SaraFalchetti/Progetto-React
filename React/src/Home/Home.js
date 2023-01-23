@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import useHttp from '../hook/use-http';
 import { faEye, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -11,13 +11,14 @@ import Loading from '../UI/Loading';
 //import Form2 from '../form/Form2';
 import Modale2 from '../UI/Modale2';
 import Filtro from '../filtro/Filtro';
+import DettaglioContext from "../store/dettaglio-context";
 
 
 const Home = () => {
   const [dati, setDati] = useState([]);
   const [indirizzo, setIndirizzo] = useState(null);
 
-  const [editedContatto, setEditedContatto] = useState(null); //MODIFICA,spostato in dettaglio
+  // const [editedContatto, setEditedContatto] = useState(null); //MODIFICA,spostato in dettaglio
 
   const [id, setId] = useState(null);
 
@@ -25,7 +26,6 @@ const Home = () => {
   const [spin, setSpin] = useState(true);
 
   const [nomeCerca, setNomeCerca] = useState("");
-
 
 
   /*Chiamata http */
@@ -45,7 +45,7 @@ const Home = () => {
     setDati(user_array)
   };
 
-  const { sendRequest: fetchUser } =useHttp();
+  const { sendRequest: fetchUser } = useHttp();
 
   useEffect(() => {
     fetchUser({ url: 'http://localhost:8000/users' }, userData);
@@ -60,27 +60,27 @@ const Home = () => {
     setSpin((s) => !s);
 
   }
-
-  /*  const modificaHandler = (contatto) => {
-     setEditedContatto(contatto);
- 
-   }; 
-
-  const saveFormDataHandler = (data) => { //MODIFICA
-
-    const index = dati.findIndex((elemento) => elemento.id === data.id)
-
-    if (index !== -1) {
-      let contatti = [...dati];
-      contatti[index] = data;
-      setDati(contatti)
-    } else {
-      setDati((prevContatti) => {
-        return [data, ...prevContatti]
-      })
-    }
-    setEditedContatto(null);
-  };*/
+  /* 
+     const modificaHandler = (contatto) => {
+       setEditedContatto(contatto);
+   
+     }; 
+  
+    const saveFormDataHandler = (data) => { //MODIFICA
+  
+      const index = dati.findIndex((elemento) => elemento.id === data.id)
+  
+      if (index !== -1) {
+        let contatti = [...dati];
+        contatti[index] = data;
+        setDati(contatti)
+      } else {
+        setDati((prevContatti) => {
+          return [data, ...prevContatti]
+        })
+      }
+      setEditedContatto(null);
+    };*/
 
   const saveIndirizzoHandler = (address) => {
     setIndirizzo(address);
@@ -91,11 +91,11 @@ const Home = () => {
     setIndirizzo(null);
   };
 
-//DELETE DEL CONTATTO
+  //DELETE DEL CONTATTO
   const { sendRequest: deleteUser } = useHttp();
 
   const deleteHandler = () => {
-   setDati((prevState) => prevState.filter(cont => cont.id !== id));
+    setDati((prevState) => prevState.filter(cont => cont.id !== id));
     deleteUser({ url: `http://localhost:8000/users/${id}`, method: 'DELETE' });
 
   };
@@ -108,8 +108,16 @@ const Home = () => {
     return data.filter((item) => item.nome.toLowerCase().includes(nomeCerca.toLowerCase()));
 
   }
+  /////////////////////////////////////////////
+  const ctx = useContext(DettaglioContext);
 
+  const dettaglioHandler = (contatto) => {
 
+    ctx.onDati(contatto);
+  }
+
+  const datiUtente = JSON.stringify(ctx.utente)
+  ////////////////////////////////////////////
   return (
     <>
       <div className='row'>
@@ -133,12 +141,18 @@ const Home = () => {
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
               onChange={(e) => setNomeCerca(e.target.value)} />
           </Filtro>
- 
+
+          <div>
+            <p>{datiUtente}</p>
+          </div>
+
           {show &&
+
             <TabellaDati
               contatti={handleSearch(dati)}
               onDelete={prendiId}
-              //onChange={modificaHandler} MODIFICA
+              // onChange={modificaHandler} //MODIFICA
+              onSaveContatto={dettaglioHandler}
               onSaveIndirizzo={saveIndirizzoHandler}
             >
             </TabellaDati>
