@@ -115,7 +115,6 @@ const Dettaglio = () => {
             <FormFormik
                 editedContatto={editedContatto}
                 onSaveFormData={creaEModifica}
-
                 onSaveUtente={()=>dettaglioHandler(editedContatto)}>
             </FormFormik>
 

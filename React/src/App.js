@@ -5,9 +5,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import Login from './login/Login';
 import MainHeader from "../src/mainHeader/MainHeader";
-import AuthContext from './store/auth-context';
+//import AuthContext from './store/auth-context';
 import Loading from './UI/Loading';
-import { DettaglioContextProvider } from './store/dettaglio-context';
+//import { DettaglioContextProvider } from './store/dettaglio-context';
+import Posts from './posts/Posts';
+import { useSelector } from 'react-redux';
 //import DettaglioContext from './store/dettaglio-context';
 
 
@@ -16,8 +18,10 @@ import { DettaglioContextProvider } from './store/dettaglio-context';
 const Dettaglio = React.lazy(() => import('../src/pages/Dettaglio'))
 
 function App() {
-  const ctx = useContext(AuthContext);
+ // const ctx = useContext(AuthContext);
 
+  const isLogged= useSelector(state => state.auth.isLogged);
+ 
   return (
     <div className="container-fluid mx-3 my-2 p-1">
 
@@ -32,35 +36,33 @@ function App() {
           <Route path="/" exact>
             <Redirect to="/tabella" />
           </Route>
-          {!ctx.isLoggedIn && (
+          {!isLogged && (
             <Route path="/login">
               <Login />
             </Route>)}
 
-
-          <DettaglioContextProvider>
-            
             <Route path="/tabella" exact>
-              {ctx.isLoggedIn &&
+              {isLogged &&
                 <Home />
               }
-              {!ctx.isLoggedIn && <Redirect to="/login" />}
+              {!isLogged && <Redirect to="/login" />}
             </Route>
-             <Route path="/tabella/dettaglio/:userId">
-             {ctx.isLoggedIn && <Dettaglio />}
-            {!ctx.isLoggedIn && <Redirect to="/login" />}
-              </Route>
-          </DettaglioContextProvider>
+
 
           <Route path="/dettaglio" exact>
-            {ctx.isLoggedIn && <Dettaglio />}
-            {!ctx.isLoggedIn && <Redirect to="/login" />}
+            {isLogged && <Dettaglio />}
+            {!isLogged && <Redirect to="/login" />}
           </Route>
 
-       {/*    <Route path="/dettaglio/:userId">
-            {ctx.isLoggedIn && <Dettaglio />}
-            {!ctx.isLoggedIn && <Redirect to="/login" />}
-          </Route> */}
+             <Route path="/dettaglio/:userId">
+            {isLogged && <Dettaglio />}
+            {!isLogged && <Redirect to="/login" />}
+          </Route> 
+
+          <Route path="/postUtenti" >
+          {isLogged && <Posts />}
+          {!isLogged && <Redirect to="/login" />}
+          </Route>
 
 
           <Route path="*">
@@ -78,5 +80,17 @@ function App() {
 
 export default App;
 
+ /* <DettaglioContextProvider>
 
+            <Route path="/tabella" exact>
+              {ctx.isLoggedIn &&
+                <Home />
+              }
+              {!ctx.isLoggedIn && <Redirect to="/login" />}
+            </Route>
+            <Route path="/tabella/dettaglio/:userId">
+              {ctx.isLoggedIn && <Dettaglio />}
+              {!ctx.isLoggedIn && <Redirect to="/login" />}
+            </Route>
+          </DettaglioContextProvider> */
 

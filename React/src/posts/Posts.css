@@ -1,0 +1,19 @@
+
+.sfondo {
+    background-color: rgb(28, 187, 134);
+}
+
+tr:hover{
+    background-color: rgb(211, 247, 233);
+}
+
+/* tr:nth-child(2n+0) { 
+    background: rgb(230, 230, 230); 
+} */
+
+.gray{
+    background: rgb(230, 230, 230); 
+}
+
+
+

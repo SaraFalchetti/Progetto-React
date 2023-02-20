@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useReducer, useContext } from 'react';
+import React, {useState} from 'react';
+//import React, { useState, useEffect, useReducer, useContext } from 'react';
 import Card from '../UI/Card';
 import classes from './Login.module.css';
-import AuthContext from "../store/auth-context";
+//import AuthContext from "../store/auth-context";
+import {useDispatch } from 'react-redux';
+import { authAction } from '../store/auth-redux';
 
-const usernameReducer = (state, action) => {
+/* const usernameReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
     return { value: action.val, isValid: action.val.trim().length > 6 }
   }
@@ -13,20 +16,25 @@ const usernameReducer = (state, action) => {
   }
   return { value: '', isValid: false }
 
-}
+} */
 
 const Login = () => {
 
-  const [formIsValid, setFormIsValid] = useState(false);
+ /*  const [formIsValid, setFormIsValid] = useState(false);
 
-  const [usernameState, dispatchUsername] = useReducer(usernameReducer,
+  const [usernameState, setUsername] = useReducer(usernameReducer,
     { value: '', isValid: null });
 
-  const { isValid: usernameIsValid } = usernameState;
+  const { isValid: usernameIsValid } = usernameState; */
+
+  
+
+  //const isLogged = useSelector(state => state.datiUtente.isLogged);
+
 
   //quando il value cambia ma la validity non cambia questo effect non re-run
 
-  useEffect(() => {
+ /*  useEffect(() => {
     const identifier = setTimeout(() => {
       console.log('Checking form validity!');
       setFormIsValid(
@@ -38,27 +46,40 @@ const Login = () => {
       console.log('CLEANUP');
       clearTimeout(identifier);
     };
-  }, [usernameIsValid]);
+  }, [usernameIsValid]); */
 
-  const authCtx = useContext(AuthContext)
+ // const authCtx = useContext(AuthContext)
 
-  const UserChangeHandler = (event) => {
-    dispatchUsername({ type: "USER_INPUT", val: event.target.value })
+ /*  const UserChangeHandler = (event) => {
+    setUsername({ type: "USER_INPUT", val: event.target.value })
   };
-
-
+ */
+/* 
   const validateUserHandler = () => {
-    dispatchUsername({ type: "INPUT_BLUR" });
-  };
+    setUsername({ type: "INPUT_BLUR" });
+  }; */
+  const [usernameState, setUsername]=useState("");
+  
+  //Redux:
+  const dispatch= useDispatch();
 
+  const userChangeHandler=(event)=>{
+    setUsername(event.target.value);
+
+};
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (formIsValid) {
-      authCtx.onLogIn(usernameState.value);
-    }
+    dispatch(authAction.login(usernameState))
+ };
+   /*  if (formIsValid) {
+      //authCtx.onLogIn(usernameState.value);
+       dispatch(authAction.login(usernameState));
+    } */
+////////////////////////////////////////////////
+   //
 
-  };
+ 
 
   return (
 
@@ -71,16 +92,16 @@ const Login = () => {
 
               <form onSubmit={submitHandler}>
                 <div
-                  className={`${classes.control} ${usernameIsValid === false ? classes.invalid : ''
-                    }`}
+                  /* className={`${classes.control} ${usernameIsValid === false ? classes.invalid : ''
+                    }`} */
                 >
                   <label htmlFor="username">Username</label>
                   <input
                     type="username"
                     id="username"
-                    value={usernameState.value}
-                    onChange={UserChangeHandler}
-                    onBlur={validateUserHandler}
+                    value={usernameState}
+                    onChange={userChangeHandler}
+                    //onBlur={validateUserHandler}
                   />
                 </div>
 

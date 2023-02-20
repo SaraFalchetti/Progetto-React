@@ -2,15 +2,14 @@ import { faEye, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import '../tabella-dati/TabellaDati.css';
 import '../tabella-dati/TabellaDati.scss';
-//import React, { useState } from 'react';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-
-
+import { Link} from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 
 const TabellaDati = (props) => {
 
-  const history=useHistory();
+
+ // const history=useHistory();
 
   const deleteContatto = (id) => {
     props.onDelete(id);
@@ -22,17 +21,19 @@ const TabellaDati = (props) => {
 
   };
 
+  
   /*   const modificaContatto = (contatto) => {
      props.onChange(contatto);
       
    };  */
 
 
-   const dettaglioHandler=(contatto)=>{
+   /* const dettaglioHandler=(contatto)=>{
    history.push(`/tabella/dettaglio/${contatto.id}`);
    props.onSaveContatto(contatto);
 
-   };
+   }; */
+
 
 
   return (
@@ -74,13 +75,13 @@ const TabellaDati = (props) => {
                       />
                     </button>}
 
-                  {/* <Link to={`/tabella/dettaglio/${contatto.id}`}> */}
+                  <Link to={`/tabella/dettaglio/${contatto.id}`}> 
                     <button type="button" className="btn btn-outline-success mx-1"
                    //  onClick={() => modificaContatto(contatto)}
-                    onClick={()=>dettaglioHandler(contatto)}
+                   // onClick={()=>dettaglioHandler(contatto)}
                     ><FontAwesomeIcon icon={faPencilAlt}
                       /></button>
-                 {/*   </Link>  */}
+                   </Link>  
 
 
                   <button type="button" className="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#eliminaModal"
@@ -93,7 +94,6 @@ const TabellaDati = (props) => {
             )}
           </tbody>
         </table>
-        
       </div>
     </div >
   );

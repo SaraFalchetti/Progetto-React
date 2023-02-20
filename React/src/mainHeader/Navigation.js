@@ -1,13 +1,32 @@
 import React, { useContext } from 'react';
 import AuthContext from '../store/auth-context';
-import "../mainHeader/Navigation.css"
+import "../mainHeader/Navigation.css";
+import { useSelector, useDispatch } from 'react-redux';
+import { clickAction } from '../store/click-redux';
+import { authAction } from '../store/auth-redux';
 
 const Navigation = () => {
-  const ctx = useContext(AuthContext);
+  //const ctx = useContext(AuthContext);
+
+  //const username= useSelector(state => state.click.username);
+
+  const isClicked = useSelector(state => state.click.isClicked);
+  const isLogged= useSelector(state => state.auth.isLogged);
+
+  const dispatch = useDispatch();
+
+  const logoutHandler=()=>{
+    dispatch(authAction.logout())
+  }
+
+  const showHandler = () => {
+    dispatch(clickAction.show());
+  }
+
   return (
 
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      
+
       <a className="navbar-brand" href="#"><h1>I tuoi contatti</h1></a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon">Contatti</span>
@@ -15,15 +34,22 @@ const Navigation = () => {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
 
-          {ctx.isLoggedIn && (
+          {isLogged && (
             <li>
-              <button className="btn btn-outline-success mx-1" type="button" 
-              onClick={ctx.onLogout}>Logout</button>
+              <button className="btn btn-outline-success mx-1" type="button"
+                onClick={logoutHandler}>Logout</button>
             </li>
           )}
+
+          {isClicked && <li>
+            <button className="btn btn-outline-success mx-1" type="button" 
+            onClick={showHandler}>Show</button>
+          </li>
+          }
+
         </ul>
       </div>
-      
+
     </nav>
 
     //////////

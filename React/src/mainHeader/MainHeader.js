@@ -3,9 +3,12 @@ import Navigation from './Navigation';
 
 
 const MainHeader = (props) => {
+
   return (
     <header>
-      <Navigation isLoggedIn={props.isAuthenticated} onLogout={props.onLogout} />
+      <Navigation
+       //isLoggedIn={props.isAuthenticated} onLogout={props.onLogout}
+        />  
     </header>
   );
 };
